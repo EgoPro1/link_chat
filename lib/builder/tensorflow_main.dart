@@ -1,0 +1,1 @@
+Future<String> loadModel(String tfliteModelName, String tfliteModelLabels) => throw UnsupportedError('loadModel Unsupported');
