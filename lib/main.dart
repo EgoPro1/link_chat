@@ -19,5 +19,5 @@ void main() async{
   await prefs.initPrefs();
 
   runApp(
-      MaterialApp(debugShowCheckedModeBanner: false,home:(prefs.gettoken=='')||(prefs.gettoken==null)? HomeView():(prefs.getrol=='patient')?HomePatientView():HomeExpertView()));
+      MaterialApp(debugShowCheckedModeBanner: false,home:(prefs.gettoken=='')||(prefs.gettoken==null)||(prefs.getrol==null)? HomeView():(prefs.getrol=='patient')?HomePatientView():HomeExpertView()));
 }

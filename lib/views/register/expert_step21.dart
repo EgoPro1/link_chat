@@ -11,6 +11,8 @@ import 'package:acceso_camara/widgets/step2_form_exp.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
+import 'expert_step3.dart';
+
 class ExpertStep21 extends StatefulWidget {
   final UserPatient Upatient;
   ExpertStep21({Key? key,required this.Upatient}) : super(key: key);
@@ -126,12 +128,7 @@ class _ExpertStep21State extends State<ExpertStep21> {
                   //                 us.rol="patient";
                   print("ENTRO");
 
-                  var result = null;
-                  result = await uService.createUser(Upatientaux);
-                  String uuid = result.data.substring(9, 48);
-                  String token = result.data.substring(56,result.data.toString().length-2);
-                  _prefs.setidexp=uuid;
-                  _prefs.settoken=token;
+
                   /*                 if(result!=null) {
                     print(result.data);
                     print("uuid: ${uuid}");
@@ -143,8 +140,9 @@ class _ExpertStep21State extends State<ExpertStep21> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RegisterEndView(
-                        user: "expert",
+                      builder: (context) => PatientStep3(
+                        Upatientaux: Upatientaux,
+
                       ),
                     ),
                   );

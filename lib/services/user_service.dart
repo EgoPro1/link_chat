@@ -29,6 +29,7 @@ class UserService with ChangeNotifier {
       if (data.statusCode == 201) {
         print("FUNCIONA");
         print(data.body);
+
         return APIResponse<String>(data: data.body);
       }
       return APIResponse<String>(error: true, errorMessage: 'An error occured');
@@ -57,7 +58,7 @@ class UserService with ChangeNotifier {
         }
         _prefs.settoken = jsonData['token'];
         _prefs.setrol = jsonData['rol'];
-
+        _prefs.setname=jsonData['fullName'];
 
 
         if(_prefs.getrol=='patient') {

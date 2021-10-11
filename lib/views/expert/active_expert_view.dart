@@ -58,10 +58,17 @@ class ActiveExpertView extends StatelessWidget {
                                 Rect.fromLTRB(0, 0, rect.width, rect.height));
                           },
                           blendMode: BlendMode.dstIn,
-                          child: Image.asset(
-                            'assets/imagen3x.png',
+                          child: Image.network(
+                            this.premiumList[i].pictureUrl!,
                             fit: BoxFit.contain,
                             alignment: AlignmentDirectional.centerEnd,
+                            errorBuilder: (context, _, __) {
+                              return Image.asset(
+                                'assets/imagen3x.png',
+                                fit: BoxFit.contain,
+                                alignment: AlignmentDirectional.centerEnd,
+                              );
+                            },
                           ),
                         ),
                         shape: RoundedRectangleBorder(
@@ -106,67 +113,6 @@ class ActiveExpertView extends StatelessWidget {
                 ),
               ),
             ),
-            SliverStickyHeader(
-              header: Container(
-                height: 60.0,
-                color: const Color(0xFF13AB46),
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Buscando Opinión',
-                  style: const TextStyle(
-                      color: Colors.white, fontSize: 12, letterSpacing: 2),
-                ),
-              ),
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 0,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, i) => GridTile(
-                    child: Card(
-                      elevation: 0,
-                      color: Colors.grey.shade300,
-                      child: Image.asset(
-                        'assets/imagen3x.png',
-                        fit: BoxFit.contain,
-                        alignment: AlignmentDirectional.centerEnd,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                    ),
-                    header: Container(
-                      child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFF13AB46),
-                                      borderRadius: BorderRadius.circular(100),
-                                      border: Border.all(
-                                          width: 2,
-                                          color: const Color(0xFF13AB46))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.person,
-                                      color: Colors.white,
-                                      size: 40.0,
-                                    ),
-                                  ),
-                                ),
-                              ])),
-                    ),
-                  ),
-                  childCount: 9,
-                ),
-              ),
-            )
           ],
         ));
   }

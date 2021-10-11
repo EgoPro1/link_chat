@@ -38,14 +38,14 @@ class _Step1FormState extends State<Step1Form> {
 
       final message =
           'Fullname: ${Upatient1.fullName} \nBirthDate: ${Upatient1.birthDate}\nEmail: ${Upatient1.email}\nPassword: ${Upatient1.password}\nConfirmPassword: $_confirmPassword\n';
-      final snackBar = SnackBar(
+    /*  final snackBar = SnackBar(
         content: Text(
           message,
           style: TextStyle(fontSize: 20),
         ),
         backgroundColor: Colors.green,
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => widget.view()),

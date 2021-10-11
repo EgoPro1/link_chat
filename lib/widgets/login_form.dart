@@ -30,14 +30,14 @@ class _LoginFormState extends State<LoginForm> {
       _formkey.currentState?.save();
 
       final message = 'Email: $_email\nPassword: $_password\n';
-      final snackBar = SnackBar(
+      /*final snackBar = SnackBar(
         content: Text(
           message,
           style: TextStyle(fontSize: 20),
         ),
         backgroundColor: Colors.green,
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
       final result = await uService.login(_email, _password);
       var rol=result.data?.rol;
       print(result);

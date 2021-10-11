@@ -127,10 +127,23 @@ class _PatientStep2State extends State<PatientStep2> {
 
                   var result = null;
                   result = await uService.createUser(Upatientaux);
-                  String uuid = result.data.substring(9, 48);
-                  String token = result.data.substring(56,result.data.toString().length-2);
+                  String uuid = result.data.substring(9,/*48*/ 45);
+                  String rolid= result.data.substring(56,92);
+                  String token = result.data.substring(103,result.data.toString().length-2);
+
+
+                  var email='';
+                  var password='';
+                  _prefs.setrolid=rolid;
                   _prefs.setidpat=uuid;
                   _prefs.settoken=token;
+                  if(Upatientaux.email!=null) {
+                    email=Upatientaux.email!;
+                    password=Upatientaux.password!;
+                    result = await uService.login(email,password);
+                  }
+                  _prefs.setname=Upatientaux.fullName!;
+
                   /*                 if(result!=null) {
                     print(result.data);
                     print("uuid: ${uuid}");

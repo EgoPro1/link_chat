@@ -119,6 +119,7 @@ class HomeExpertView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _prefs = new PreferenciasUsuario();
+    var name;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(

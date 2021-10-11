@@ -1,7 +1,5 @@
-import 'package:acceso_camara/chat/chat.dart';
 import 'package:acceso_camara/constants/strings_resources.dart';
 import 'package:acceso_camara/models/diagnosis_model.dart';
-import 'package:acceso_camara/models/history_item_response.dart';
 import 'package:acceso_camara/preferencias_usuario/prefs.dart';
 import 'package:acceso_camara/services/method_model_service.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +21,8 @@ class ResultExpertView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool diagnosticarCasoButtonPressed = false;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -155,37 +155,39 @@ class ResultExpertView extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              width: double.infinity,
-              child: TextButton(
-                  onPressed: () async {
-                    var _prefs = PreferenciasUsuario();
-                    await MethodModelService().postDiagnosis(
-                        DiagnosisModel.fromJson(
-                            {"result": "ccc", "description": "ddd"}),
-                        this.resultId,
-                        _prefs.getidexp,
-                        _prefs.gettoken);
-
-                    DiagnosisData diagnosisInfo=new DiagnosisData();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChatScreen(diagnosisInfo:diagnosisInfo  ,premium: true,resultid:resultId)),
-                    );
-                  },
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xFF13AB46))),
-                  child: Padding(
-
-                    padding: const EdgeInsets.all(24.0),
-                    child: Text(
-                      "DIAGNOSTICAR CASO",
-                      style: TextStyle(color: Colors.white, fontSize: 16.0),
-                    ),
-                  )),
-            )
+            StatefulBuilder(builder: (context, setState) {
+              return Container(
+                padding: const EdgeInsets.all(8.0),
+                width: double.infinity,
+                child: TextButton(
+                    onPressed: diagnosticarCasoButtonPressed
+                        ? null
+                        : () {
+                            setState(() {
+                              diagnosticarCasoButtonPressed = true;
+                              var _prefs = PreferenciasUsuario();
+                              MethodModelService().postDiagnosis(
+                                  DiagnosisModel.fromJson(
+                                      {"result": "ccc", "description": "ddd"}),
+                                  this.resultId,
+                                  _prefs.getidexp,
+                                  _prefs.gettoken);
+                            });
+                          },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            diagnosticarCasoButtonPressed
+                                ? Colors.grey.shade300
+                                : const Color(0xFF13AB46))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Text(
+                        "DIAGNOSTICAR CASO",
+                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      ),
+                    )),
+              );
+            })
           ],
         ),
       ),

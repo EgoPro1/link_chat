@@ -43,7 +43,6 @@ class ResultPatientView extends StatelessWidget {
   final bool premium;
   final List diagnosisInfo;
   final String resultid;
-  
 
   const ResultPatientView(
       {Key? key,
@@ -52,7 +51,7 @@ class ResultPatientView extends StatelessWidget {
       required this.imagePath,
       required this.premium,
       required this.diagnosisInfo,
-      required this.resultid})
+        required this.resultid})
       : super(key: key);
 
   @override
@@ -68,7 +67,7 @@ class ResultPatientView extends StatelessWidget {
     expertdescription = diagnosisInfo[0].description;
     expertId = diagnosisInfo[0].expertId;
     }
-    
+
     bool isPremium = this.premium;
     bool expertRequested = false;
 
@@ -242,8 +241,8 @@ class ResultPatientView extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: RichText(text: new TextSpan(  
-                              style: new TextStyle(      
+                            child: RichText(text: new TextSpan(
+                              style: new TextStyle(
                                   color: Colors.black,
                                 ),
                               children: <TextSpan>[
@@ -312,14 +311,14 @@ class ResultPatientView extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       width: double.infinity,
                       child: TextButton(
-                          onPressed: () {
+                          onPressed: (){
                               setState(() => expertRequested = true);
-                              print(diagnosisInfo);
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChatScreen(diagnosisInfo: diagnosisInfo[0],premium: premium,resultid:resultid),
+                              builder: (context) => ChatScreen(diagnosisInfo: diagnosisInfo[0],premium: premium,resultid:resultid),
                               ));
-
                           },
+
+
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
                                   const Color(0xFF1E4DE8))),
@@ -328,7 +327,6 @@ class ResultPatientView extends StatelessWidget {
                             child: Text(
                               "CHAT",
                               style: TextStyle(color: Colors.white),
-
                             ),
                           )),
                     )

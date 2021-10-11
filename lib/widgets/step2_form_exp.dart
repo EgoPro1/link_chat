@@ -33,9 +33,9 @@ class _Step2FormState extends State<Step2FormExp> {
     final isValid = _formkey.currentState?.validate();
     if (isValid == true) {
       _formkey.currentState?.save();
-
+/*
       final message =
-          'Profesion: ${Upatient2.profession}\nAddress: ${Upatient2.address}\nBloodType: ${Upatient2.bloodType}\n';
+          'Profesion: ${Upatient2.profession}\nAddress: ${Upatient2.address}\nBloodType: ${metadata.bloodType}\n';
       final snackBar = SnackBar(
         content: Text(
           message,
@@ -43,7 +43,7 @@ class _Step2FormState extends State<Step2FormExp> {
         ),
         backgroundColor: Colors.green,
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
 
 
       Upatient2.bloodType=metadata.bloodType;
@@ -90,6 +90,8 @@ class _Step2FormState extends State<Step2FormExp> {
             validator: (data) {
               if (data == null || data.isEmpty) {
                 return 'Ingrese su profesión';
+              }if (data.length < 5) {
+                return 'Minimo 5 caracteres';
               } else {
                 return null;
               }
@@ -126,6 +128,8 @@ class _Step2FormState extends State<Step2FormExp> {
             validator: (data) {
               if (data == null || data.isEmpty) {
                 return 'Ingrese su profesión';
+              }if (data.length < 5) {
+                return 'Minimo 5 caracteres';
               } else {
                 return null;
               }
@@ -146,6 +150,8 @@ class _Step2FormState extends State<Step2FormExp> {
             validator: (data) {
               if (data == null || data.isEmpty) {
                 return 'Ingrese su profesión';
+              }if (data.length < 5) {
+                return 'Minimo 5 caracteres';
               } else {
                 return null;
               }
@@ -166,6 +172,8 @@ class _Step2FormState extends State<Step2FormExp> {
             validator: (data) {
               if (data == null || data.isEmpty) {
                 return 'Ingrese su especialidad';
+              }if (data.length < 5) {
+                return 'Minimo 5 caracteres';
               } else {
                 return null;
               }

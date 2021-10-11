@@ -95,58 +95,81 @@ class _RecordPatientState extends State<RecordPatient> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ResultPatientView(
-                                      accuracy: patientResultList[i].modelPercentage!,
-                                      label: patientResultList[i].modelResult!,
-                                      imagePath: patientResultList[i].pictureUrl!,
-                                      premium: patientResultList[i].isPremium!,
-                                      diagnosisInfo: patientResultList[i].diagnosisData!,
-                                      resultid:patientResultList[i].resultId!
-
-                                    ))),
+                                    accuracy:
+                                        patientResultList[i].modelPercentage!,
+                                    label: patientResultList[i].modelResult!,
+                                    imagePath: patientResultList[i].pictureUrl!,
+                                    premium: patientResultList[i].isPremium!,
+                                    diagnosisInfo:
+                                        patientResultList[i].diagnosisData!,
+                                    resultid:patientResultList[i].resultId!))),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Row(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Image.network(
-                                patientResultList[i].pictureUrl!,
-                                height: 80,
-                                width: 80,
-                                alignment: Alignment.center,
-                                errorBuilder: (context, _, __) {
-                                  return Image.asset(
-                                    "assets/imagen3x.png",
-                                    height: 80,
-                                    width: 80,
+                              Stack(
+                                alignment: Alignment.bottomRight,
+                                children: [
+                                  Image.network(
+                                    patientResultList[i].pictureUrl!,
+                                    height: 182,
+                                    width: 182,
                                     alignment: Alignment.center,
-                                  );
-                                },
-                              ),
-                              Container(
-                                height: 200,
-                                child: CircularPercentIndicator(
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  radius: 100.0,
-                                  lineWidth: 15.0,
-                                  center: new Text(
-                                      (patientResultList[i].modelPercentage! *
-                                                  100)
-                                              .toStringAsFixed(2) +
-                                          "%",
-                                      style: const TextStyle(
-                                        color: const Color(0xFF000000),
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                  percent:
-                                      patientResultList[i].modelPercentage!,
-                                  progressColor:
-                                      patientResultList[i].modelResult !=
+                                    errorBuilder: (context, _, __) {
+                                      return Image.asset(
+                                        "assets/imagen3x.png",
+                                        height: 182,
+                                        width: 182,
+                                        alignment: Alignment.center,
+                                      );
+                                    },
+                                  ),
+                                  Container(
+                                    height: 80,
+                                    child: CircularPercentIndicator(
+                                      circularStrokeCap:
+                                          CircularStrokeCap.round,
+                                      radius: 80.0,
+                                      lineWidth: 10.0,
+                                      center: new Text(
+                                          (patientResultList[i]
+                                                          .modelPercentage! *
+                                                      100)
+                                                  .toStringAsFixed(0) +
+                                              "%",
+                                          style: const TextStyle(
+                                            color: const Color(0xFF000000),
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.w500,
+                                          )),
+                                      percent:
+                                          patientResultList[i].modelPercentage!,
+                                      progressColor:
+                                          patientResultList[i].modelResult !=
+                                                  "melanoma"
+                                              ? const Color(0xFF13AB46)
+                                              : const Color(0xFFD50000),
+                                      backgroundColor: Colors.white,
+                                    ),
+                                  ),
+                                  Container(
+                                      alignment: Alignment.bottomLeft,
+                                      child: patientResultList[i].modelResult !=
                                               "melanoma"
-                                          ? const Color(0xFF13AB46)
-                                          : const Color(0xFFD50000),
-                                  backgroundColor: Colors.white,
-                                ),
+                                          ? Text(
+                                              "  Benigno",
+                                              style: TextStyle(
+                                                  color: Colors.green[800],
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          : Text("  Maligno",
+                                              style: TextStyle(
+                                                  color: Colors.red[800],
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold)))
+                                ],
                               ),
                             ],
                           ),

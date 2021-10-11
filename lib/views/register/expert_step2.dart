@@ -1,4 +1,4 @@
-import 'package:acceso_camara/models/userpacient.dart';
+/*import 'package:acceso_camara/models/userpacient.dart';
 import 'package:acceso_camara/views/register/expert_step3.dart';
 import 'package:acceso_camara/widgets/form_title.dart';
 import 'package:acceso_camara/widgets/step2_form.dart';
@@ -91,3 +91,4 @@ class _ExpertStep2State extends State<ExpertStep2> {
     );
   }
 }
+*/

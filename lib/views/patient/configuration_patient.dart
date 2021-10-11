@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:acceso_camara/chat/chat.dart';
 import 'package:acceso_camara/models/history_item_response.dart';
+import 'package:acceso_camara/models/userpacient.dart';
 import 'package:acceso_camara/services/file_service.dart';
 import 'package:acceso_camara/preferencias_usuario/prefs.dart';
 import 'package:acceso_camara/views/login/login_view.dart';
@@ -52,7 +53,7 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
                   height: 50.0,
                   decoration: BoxDecoration(
                       color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                          0xFF1CFF16), shape: BoxShape.rectangle),
+                          0xFF13AB46), shape: BoxShape.rectangle),
                   child: Text(
                     "\n        Cuenta",
                     style: TextStyle(
@@ -66,16 +67,16 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
                   leading: Icon(
                     Icons.build,
                     color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                        0xFF1CFF16),
+                        0xFF13AB46),
                   ),
                   title: Text("Información personal"),
-                  onTap: () async {
+                  onTap: () async {/*
                     if(_prefs.getrol=='expert') {
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => PatientStep3())
                       );
-                    }
+                    }*/
                   },
 
                 ),
@@ -83,14 +84,24 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
                   leading: Icon(
                     Icons.lock_rounded,
                     color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                        0xFF1CFF16),
+                        0xFF13AB46),
                   ),
                   title: Text("Pago"),
                   onTap: () async {
-                    DiagnosisData diagnosisInfo=new DiagnosisData();/*
+                    DiagnosisData diagnosisInfo=new DiagnosisData();
 
                     if(_prefs.getrol=='expert') {
+                    /*  UserPatient Upatientaux= new UserPatient();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PatientStep3(
+                            Upatientaux: Upatientaux,
 
+                          ),
+                        )
+                      );*/
+/*
                       var image;
                       image =
                       await picker.pickImage(source: ImageSource.gallery);
@@ -99,12 +110,13 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
                           "temp_patient_image_path", image!.path);
                       var _image = File(image.path);
                       var res = await fileService.ImageUpload(_image,'profilePicture' );
-                      Navigator.pop(context);
-                    }*/
-                    Navigator.push(
+                      Navigator.pop(context);*/
+
+                    }
+                   /* Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ChatScreen(diagnosisInfo:diagnosisInfo  ,premium: true,resultid:"resultid")),
-                    );
+                    );*/
 
                   },
                 ),
@@ -112,7 +124,7 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
                   leading: Icon(
                     Icons.power_settings_new_rounded,
                     color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                        0xFF1CFF16),
+                        0xFF13AB46),
                   ),
                   title: Text("Cerrar Sesión"),
                   onTap: (){
@@ -132,7 +144,7 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
               height: 50.0,
               decoration: BoxDecoration(
                   color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                      0xFF1CFF16), shape: BoxShape.rectangle),
+                      0xFF13AB46), shape: BoxShape.rectangle),
               child: Text(
                 "\n        Otros",
                 style: TextStyle(
@@ -146,7 +158,7 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
               leading: Icon(
                 Icons.notifications,
                 color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                    0xFF1CFF16),
+                    0xFF13AB46),
               ),
               title: Text("Notificaciones"),
             ),
@@ -154,7 +166,7 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
               leading: Icon(
                 Icons.info,
                 color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                    0xFF1CFF16),
+                    0xFF13AB46),
               ),
               title: Text("Términos y Condiciones"),
             ),
@@ -162,7 +174,7 @@ class _ConfigurationPatientState extends State<ConfigurationPatient> {
               leading: Icon(
                 Icons.info,
                 color: _prefs.getrol=='patient'?Color(0xFF1E4DE8):Color(
-                    0xFF1CFF16),
+                    0xFF13AB46),
               ),
               title: Text("Tutorial"),
             ),

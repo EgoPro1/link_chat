@@ -36,14 +36,14 @@ class _Step2FormState extends State<Step2Form> {
 
       final message =
           'Profesion: ${Upatient2.profession}\nAddress: ${Upatient2.address}\nBloodType: ${Upatient2.bloodType}\n';
-      final snackBar = SnackBar(
+      /*final snackBar = SnackBar(
         content: Text(
           message,
           style: TextStyle(fontSize: 20),
         ),
         backgroundColor: Colors.green,
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
 
 
       Upatient2.bloodType=metadata.bloodType;
@@ -122,7 +122,9 @@ class _Step2FormState extends State<Step2Form> {
             validator: (data) {
               if (data == null || data.isEmpty) {
                 return 'Ingrese su profesión';
-              } else {
+              } if (data.length < 5) {
+                return 'Minimo 5 caracteres';
+              }else {
                 return null;
               }
             },
@@ -142,7 +144,9 @@ class _Step2FormState extends State<Step2Form> {
             validator: (data) {
               if (data == null || data.isEmpty) {
                 return 'Ingrese su centro de estudio';
-              } else {
+              } if (data.length < 5) {
+                return 'Minimo 5 caracteres';
+              }else {
                 return null;
               }
             },
@@ -152,22 +156,18 @@ class _Step2FormState extends State<Step2Form> {
             height: 8.0,
             color: Colors.transparent,
           ),
-          InputText(
-            hint: 'Piel',
-            label: 'Piel',
-            keyboard: TextInputType.name,
-            obsecure: false,
-            preIcono: Icon(Icons.account_balance),
-            onChanged: (value) => setState(() =>Upatient2.skin = value),
-            validator: (data) {
-              if (data == null || data.isEmpty) {
-                return 'Ingrese su piel';
-              } else {
-                return null;
-              }
-            },
-            fontSize: 14.0,
-          ),
+       AppDropdownInput(
+        hintText: "Tipo de Piel",
+        options: ["Seca", "Grasosa", "Escamosa"],
+        value:Upatient2.skin,
+        onChanged: (String? value) {
+          setState(() {
+            Upatient2.skin = value;
+          });
+        },
+        getLabel: (String value) => value,
+        prefixIcon: Icon(Icons.accessibility),
+      ),
           Divider(
             height: 8.0,
             color: Colors.transparent,
