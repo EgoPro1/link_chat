@@ -1,8 +1,13 @@
+import 'package:acceso_camara/models/diagnosis_model.dart';
+import 'package:acceso_camara/models/patient_result_response.dart';
+import 'package:acceso_camara/views/expert/past_result_expert_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class PasiveExpertView extends StatelessWidget {
-  const PasiveExpertView({Key? key}) : super(key: key);
+  final List<PatientResultResponse> pastDiagnosisCases;
+  const PasiveExpertView({Key? key, required this.pastDiagnosisCases})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +22,21 @@ class PasiveExpertView extends StatelessWidget {
                   mainAxisSpacing: 0,
                   childAspectRatio: (4 / 2)),
               delegate: SliverChildBuilderDelegate(
-                (context, i) => GridTile(
-                  child: Card(
+                (context, i) => InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => PastResultExpertView(
+                            diagnosis: this.pastDiagnosisCases[i].diagnosis!,
+                            resultId: this.pastDiagnosisCases[i].resultId!,
+                            accuracy:
+                                this.pastDiagnosisCases[i].modelPercentage!,
+                            label: this.pastDiagnosisCases[i].modelResult!,
+                            imagePath:
+                                this.pastDiagnosisCases[i].pictureUrl!)));
+                    // ResultExpertView(accuracy: 0.5, label: "", imagePath: "",)
+                  },
+                  child: GridTile(
+                    child: Card(
                       elevation: 0,
                       color: Colors.grey.shade300,
                       child: ShaderMask(
@@ -31,17 +49,24 @@ class PasiveExpertView extends StatelessWidget {
                               Rect.fromLTRB(0, 0, rect.width, rect.height));
                         },
                         blendMode: BlendMode.dstIn,
-                        child: Image.asset(
-                          'assets/imagen3x.png',
+                        child: Image.network(
+                          this.pastDiagnosisCases[i].pictureUrl!,
                           fit: BoxFit.contain,
                           alignment: AlignmentDirectional.centerEnd,
+                          errorBuilder: (context, _, __) {
+                            return Image.asset(
+                              'assets/imagen3x.png',
+                              fit: BoxFit.contain,
+                              alignment: AlignmentDirectional.centerEnd,
+                            );
+                          },
                         ),
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),
                       ),
                     ),
-                  footer: Container(
+                    footer: Container(
                       alignment: Alignment.centerLeft,
                       child: Padding(
                           padding: const EdgeInsets.all(20.0),
@@ -66,21 +91,15 @@ class PasiveExpertView extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  'Nombre y Apellido',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                      color: const Color(0xFF13AB46),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
                                   'Información',
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(color: Colors.black),
                                 ),
                               ])),
                     ),
+                  ),
                 ),
-                childCount: 2,
+                childCount: pastDiagnosisCases.length,
               ),
             ),
           ],

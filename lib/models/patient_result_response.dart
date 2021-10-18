@@ -1,11 +1,14 @@
+import 'package:acceso_camara/models/diagnosis_model.dart';
+
 class PatientResultResponse {
   PatientResultResponse(
-      {this.resultId, this.modelResult, this.modelPercentage, this.pictureUrl});
+      {this.resultId, this.modelResult, this.modelPercentage, this.pictureUrl, this.diagnosis});
 
   String? resultId;
   String? modelResult;
   double? modelPercentage;
   String? pictureUrl;
+  DiagnosisModel? diagnosis = DiagnosisModel(description: "", result: "");
 
   factory PatientResultResponse.fromJson(Map<String, dynamic> json) =>
       PatientResultResponse(

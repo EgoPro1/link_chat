@@ -22,20 +22,41 @@ class MethodModelService with ChangeNotifier {
         .then((data) {
       if (data.statusCode == 201) {
         print(data.body);
+
         return APIResponse<MethodResultResponse>(
             data: MethodResultResponse.fromJson(json.decode(data.body)));
       }
       return APIResponse<MethodResultResponse>(
           error: true, errorMessage: 'An error occured');
-    }).catchError((_) => APIResponse<MethodResultResponse>(
+    }).catchError((error) => APIResponse<MethodResultResponse>(
             error: true, errorMessage: 'An error occured'));
   }
 
-  Future<APIResponse<DiagnosisResponse>> postDiagnosis(
-      DiagnosisModel diagnosis, String resultId, String expertId, String token) {
-        
+  Future<APIResponse<DiagnosisResponse>> postDiagnosis(DiagnosisModel diagnosis,
+      String resultId, String expertId, String token) {
     return http
         .post(Uri.parse(API + 'result/diagnosis/$resultId/$expertId'),
+            headers: {
+              HttpHeaders.authorizationHeader: 'Bearer $token',
+              'Content-Type': 'application/json'
+            },
+            body: json.encode(diagnosis.toJson()))
+        .then((data) {
+      if (data.statusCode == 201) {
+        print(data.body);
+        return APIResponse<DiagnosisResponse>(
+            data: DiagnosisResponse.fromJson(json.decode(data.body)));
+      }
+      return APIResponse<DiagnosisResponse>(
+          error: true, errorMessage: 'An error occured');
+    }).catchError((error) => APIResponse<DiagnosisResponse>(
+            error: true, errorMessage: 'An error occured'));
+  }
+
+  Future<APIResponse<DiagnosisResponse>> putDiagnosis(DiagnosisModel diagnosis,
+      String resultId, String expertId, String token) {
+    return http
+        .put(Uri.parse(API + 'result/diagnosis/$resultId/$expertId'),
             headers: {
               HttpHeaders.authorizationHeader: 'Bearer $token',
               'Content-Type': 'application/json'

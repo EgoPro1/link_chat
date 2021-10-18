@@ -9,8 +9,8 @@ class DiagnosisModel {
 
   factory DiagnosisModel.fromJson(Map<String, dynamic> json) {
     return DiagnosisModel(
-      result: json["modelResult"],
-      description: json["modelPercentage"],
+      result: json["result"],
+      description: json["description"],
     );
   }
 

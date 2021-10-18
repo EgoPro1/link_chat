@@ -28,17 +28,19 @@ class _LoginFormState extends State<LoginForm> {
     final isValid = _formkey.currentState?.validate();
     if (isValid == true) {
       _formkey.currentState?.save();
-
-      final message = 'Email: $_email\nPassword: $_password\n';
-      /*final snackBar = SnackBar(
+      final result = await uService.login(_email, _password);
+      if(result.data==null) {
+        final message = result.errorMessage;
+        final snackBar = SnackBar(
         content: Text(
-          message,
+          message!,
           style: TextStyle(fontSize: 20),
         ),
         backgroundColor: Colors.green,
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
-      final result = await uService.login(_email, _password);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+
       var rol=result.data?.rol;
       print(result);
       if (result==null) {

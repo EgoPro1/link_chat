@@ -34,6 +34,11 @@ class MessageService with ChangeNotifier {
     else
       msg.idSender = _prefs.getidexp;
     final url = _prefs.geturl;
+    print(resultid);
+    print(diagnosisInfo.expertId);
+    if(_prefs.getrol=='expert')
+      diagnosisInfo.expertId=_prefs.getidexp;
+
     return http
         .post(Uri.parse(url +
         'result/messages/${resultid}/${diagnosisInfo.expertId}'),
@@ -57,7 +62,8 @@ class MessageService with ChangeNotifier {
     //msg.idSender = "83c70a45-2220-472e-a855-16c795a87d72";
 
     final url = _prefs.geturl;
-
+    if(_prefs.getrol=='expert')
+      diagnosisInfo.expertId=_prefs.getidexp;
     return http.get(Uri.parse(url +
         'result/messages/${resultid}/${diagnosisInfo.expertId}'), headers: headers).then((data) {
       if (data.statusCode == 201||data.statusCode == 200) {

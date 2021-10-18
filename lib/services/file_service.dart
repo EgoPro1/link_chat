@@ -65,7 +65,7 @@ class FileService with ChangeNotifier {
   }
 
 
-  Future<http.StreamedResponse>FileExpUpload(List<PlatformFile>files,String key,String key2) async{
+  Future<http.StreamedResponse>FileExpUpload(List<PlatformFile>files,List<String> keys) async{
     var token=_prefs.gettoken;
     final url = _prefs.geturl;
     var urlfinal;
@@ -83,11 +83,12 @@ class FileService with ChangeNotifier {
     //create multipart request for POST or PATCH method
     var request = http.MultipartRequest("POST", Uri.parse(urlfinal));
     //add text fields
-    request.fields[key] = key;
-    request.fields[key2] = key2;
+
+  //  request.fields[key2] = key2;
     //create multipart using filepath, string or bytes
     for(int i=0;i<files.length;i++) {
-      request.files.add(await http.MultipartFile.fromPath(i==0?key:key2, files[i].path));
+      request.fields[keys[i]] = keys[i];
+      request.files.add(await http.MultipartFile.fromPath(keys[i], files[i].path));
     }
     //add multipart to request
     request.headers.addAll(headers);

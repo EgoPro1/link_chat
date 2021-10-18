@@ -2,16 +2,17 @@ import 'package:acceso_camara/constants/strings_resources.dart';
 import 'package:acceso_camara/models/diagnosis_model.dart';
 import 'package:acceso_camara/preferencias_usuario/prefs.dart';
 import 'package:acceso_camara/services/method_model_service.dart';
+import 'package:acceso_camara/widgets/dropdown_list.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class ResultExpertView extends StatelessWidget {
+class ActiveResultExpertView extends StatelessWidget {
   final String resultId;
   final double accuracy;
   final String label;
   final String imagePath;
 
-  const ResultExpertView(
+  const ActiveResultExpertView(
       {Key? key,
       required this.resultId,
       required this.accuracy,
@@ -22,6 +23,8 @@ class ResultExpertView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool diagnosticarCasoButtonPressed = false;
+    TextEditingController textAreaController = new TextEditingController();
+    var selectedDrodownlistValue = "melanoma";
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -145,11 +148,26 @@ class ResultExpertView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
+              child: StatefulBuilder(builder: (context, setState) {
+                return AppDropdownInput(
+                  hintText: "Seleccione",
+                  options: ['benign keratosis', 'melanoma', 'nevus', 'unknown'],
+                  getLabel: (String value) => value,
+                  value: selectedDrodownlistValue,
+                  onChanged: (String? value) => setState(() {
+                    selectedDrodownlistValue = value!;
+                  }),
+                );
+              }),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Card(
                 color: const Color(0xFFEFEFEF),
                 child: TextField(
+                  controller: textAreaController,
                   keyboardType: TextInputType.multiline,
-                  maxLines: 8,
+                  maxLines: 3,
                   cursorColor: Colors.black,
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
@@ -167,8 +185,10 @@ class ResultExpertView extends StatelessWidget {
                               diagnosticarCasoButtonPressed = true;
                               var _prefs = PreferenciasUsuario();
                               MethodModelService().postDiagnosis(
-                                  DiagnosisModel.fromJson(
-                                      {"result": "ccc", "description": "ddd"}),
+                                  DiagnosisModel.fromJson({
+                                    "result": selectedDrodownlistValue,
+                                    "description": textAreaController.text
+                                  }),
                                   this.resultId,
                                   _prefs.getidexp,
                                   _prefs.gettoken);

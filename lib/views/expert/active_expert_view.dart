@@ -1,12 +1,12 @@
 import 'package:acceso_camara/models/patient_result_response.dart';
-import 'package:acceso_camara/views/expert/result_expert_view.dart';
+import 'package:acceso_camara/views/expert/active_result_expert_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class ActiveExpertView extends StatelessWidget {
-  final List<PatientResultResponse> premiumList;
-  const ActiveExpertView({Key? key, required this.premiumList})
+  final List<PatientResultResponse> activeDiagnosisCases;
+  const ActiveExpertView({Key? key, required this.activeDiagnosisCases})
       : super(key: key);
 
   @override
@@ -36,12 +36,14 @@ class ActiveExpertView extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, i) => InkWell(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ResultExpertView(
-                              resultId: this.premiumList[i].resultId!,
-                              accuracy: this.premiumList[i].modelPercentage!,
-                              label: this.premiumList[i].modelResult!,
-                              imagePath: this.premiumList[i].pictureUrl!)));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => ActiveResultExpertView(
+                              resultId: this.activeDiagnosisCases[i].resultId!,
+                              accuracy:
+                                  this.activeDiagnosisCases[i].modelPercentage!,
+                              label: this.activeDiagnosisCases[i].modelResult!,
+                              imagePath:
+                                  this.activeDiagnosisCases[i].pictureUrl!)));
                       // ResultExpertView(accuracy: 0.5, label: "", imagePath: "",)
                     },
                     child: GridTile(
@@ -59,7 +61,7 @@ class ActiveExpertView extends StatelessWidget {
                           },
                           blendMode: BlendMode.dstIn,
                           child: Image.network(
-                            this.premiumList[i].pictureUrl!,
+                            this.activeDiagnosisCases[i].pictureUrl!,
                             fit: BoxFit.contain,
                             alignment: AlignmentDirectional.centerEnd,
                             errorBuilder: (context, _, __) {
@@ -109,7 +111,7 @@ class ActiveExpertView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  childCount: this.premiumList.length,
+                  childCount: this.activeDiagnosisCases.length,
                 ),
               ),
             ),

@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:acceso_camara/chat/chat.dart';
 import 'package:acceso_camara/constants/strings_resources.dart';
 import 'package:acceso_camara/models/api_response.dart';
+import 'package:acceso_camara/models/history_item_response.dart';
 import 'package:acceso_camara/models/patient_result_response.dart';
+import 'package:acceso_camara/preferencias_usuario/prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +17,7 @@ class ApiRequestExpert with ChangeNotifier {
     String url = "https://melanomia.herokuapp.com/";
     return http.put(
       Uri.parse(url + 'result/isPremium/$resultId'),
+      body: json.encode({'isPremium': true}),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
         'Content-Type': 'application/json'
@@ -31,45 +34,51 @@ class ApiRequestExpert with ChangeNotifier {
       }
       return APIResponse<List<PatientResultResponse>>(
           error: null, errorMessage: 'An error occured');
-    }).catchError((_) => APIResponse<List<PatientResultResponse>>(
+    }).catchError((error) => APIResponse<List<PatientResultResponse>>(
         error: true, errorMessage: 'An error occured'));
   }
 }
 
-class ResultPatientView extends StatelessWidget {
+class ResultPatientView extends StatefulWidget {
   final double accuracy;
   final String label;
   final String imagePath;
   final bool premium;
   final List diagnosisInfo;
   final String resultid;
+  //final String name;
 
-  const ResultPatientView(
-      {Key? key,
-      required this.accuracy,
-      required this.label,
-      required this.imagePath,
-      required this.premium,
-      required this.diagnosisInfo,
-        required this.resultid})
-      : super(key: key);
+  const ResultPatientView({
+    Key? key,
+    required this.accuracy,
+    required this.label,
+    required this.imagePath,
+    required this.premium,
+    required this.diagnosisInfo,
+    required this.resultid,
+    //required this.name
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  _ResultPatientViewState createState() => _ResultPatientViewState();
+}
 
+class _ResultPatientViewState extends State<ResultPatientView> {
+  @override
+  Widget build(BuildContext context) {
     String expertlabel = "";
     String expertdescription = "";
-    String expertId = "";
+    String expertName = "";
 
-    if (diagnosisInfo.length == 0) {
+    if (widget.diagnosisInfo.length == 0) {
     } else {
-    expertlabel = diagnosisInfo[0].result;
-    expertdescription = diagnosisInfo[0].description;
-    expertId = diagnosisInfo[0].expertId;
+      expertlabel = widget.diagnosisInfo[0].result;
+      expertdescription = widget.diagnosisInfo[0].description;
+      expertName = widget.diagnosisInfo[0].expertName;
     }
 
-    bool isPremium = this.premium;
-    bool expertRequested = false;
+    bool expertRequested = this.widget.premium;
+    var preferences = PreferenciasUsuario();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -109,7 +118,7 @@ class ResultPatientView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.network(
-                          this.imagePath,
+                          this.widget.imagePath,
                           height: 200,
                           alignment: Alignment.center,
                           errorBuilder: (context, _, __) {
@@ -128,7 +137,7 @@ class ResultPatientView extends StatelessWidget {
                         child: Container(
                           height: 200,
                           alignment: Alignment.center,
-                          color: this.label != "melanoma"
+                          color: this.widget.label != "melanoma"
                               ? const Color(0xFF85F28C)
                               : const Color(0xFFFF988A),
                           child: CircularPercentIndicator(
@@ -136,16 +145,18 @@ class ResultPatientView extends StatelessWidget {
                             radius: 120.0,
                             lineWidth: 15.0,
                             center: new Text(
-                                (this.accuracy * 100).toStringAsFixed(2) + "%",
+                                (this.widget.accuracy * 100)
+                                        .toStringAsFixed(2) +
+                                    "%",
                                 style: TextStyle(
-                                  color: this.label != "melanoma"
+                                  color: this.widget.label != "melanoma"
                                       ? const Color(0xFF13AB46)
                                       : const Color(0xFFDC3131),
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.w500,
                                 )),
-                            percent: this.accuracy,
-                            progressColor: this.label != "melanoma"
+                            percent: this.widget.accuracy,
+                            progressColor: this.widget.label != "melanoma"
                                 ? const Color(0xFF13AB46)
                                 : const Color(0xFFDC3131),
                             backgroundColor: Colors.white,
@@ -161,7 +172,7 @@ class ResultPatientView extends StatelessWidget {
               children: [
                 Icon(
                   Icons.check,
-                  color: this.label != "melanoma"
+                  color: this.widget.label != "melanoma"
                       ? const Color(0xFF13AB46)
                       : const Color(0xFFDC3131),
                   size: 20.0,
@@ -169,9 +180,9 @@ class ResultPatientView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Es " + this.label,
+                    "Es " + this.widget.label,
                     style: TextStyle(
-                        color: this.label != "melanoma"
+                        color: this.widget.label != "melanoma"
                             ? const Color(0xFF13AB46)
                             : const Color(0xFFDC3131),
                         fontSize: 20.0),
@@ -181,7 +192,7 @@ class ResultPatientView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: this.accuracy >= 0.99
+              child: this.widget.accuracy >= 0.99
                   ? Text(
                       StringsResources.RESULT_PATIENT_DESCRIPTION1,
                       style: TextStyle(color: Colors.black),
@@ -212,7 +223,7 @@ class ResultPatientView extends StatelessWidget {
               ),
             ),
             StatefulBuilder(builder: (builder, setState) {
-              if (isPremium) {
+              if (expertRequested && widget.diagnosisInfo.isNotEmpty) {
                 return Column(
                   children: [
                     Container(
@@ -241,12 +252,16 @@ class ResultPatientView extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: RichText(text: new TextSpan(
-                              style: new TextStyle(
+                            child: RichText(
+                              text: new TextSpan(
+                                style: new TextStyle(
                                   color: Colors.black,
                                 ),
-                              children: <TextSpan>[
-                                  new TextSpan(text: expertlabel, style: new TextStyle(fontWeight: FontWeight.bold)),
+                                children: <TextSpan>[
+                                  new TextSpan(
+                                      text: expertlabel,
+                                      style: new TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                   new TextSpan(text: " " + expertdescription),
                                 ],
                               ),
@@ -286,7 +301,7 @@ class ResultPatientView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  expertId,
+                                  expertName,
                                   style: const TextStyle(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w500,
@@ -311,14 +326,20 @@ class ResultPatientView extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       width: double.infinity,
                       child: TextButton(
-                          onPressed: (){
-                              setState(() => expertRequested = true);
-                              Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ChatScreen(diagnosisInfo: diagnosisInfo[0],premium: premium,resultid:resultid),
-                              ));
+                          onPressed: () {
+                            setState(() => expertRequested = true);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                  diagnosisInfo: widget.diagnosisInfo[0],
+                                  premium: widget.premium,
+                                  resultid: widget.resultid,
+                                  expertName: expertName,
+                                  //name: '',
+                                ),
+                              ),
+                            );
                           },
-
-
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
                                   const Color(0xFF1E4DE8))),
@@ -349,26 +370,33 @@ class ResultPatientView extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       width: double.infinity,
                       child: TextButton(
-                          onPressed: () =>
-                              setState(() => expertRequested = true),
+                          onPressed: expertRequested
+                              ? null
+                              : () {
+                                  setState(() {
+                                    expertRequested = true;
+                                    ApiRequestExpert().requestExpertList(
+                                        widget.resultid, preferences.gettoken);
+                                  });
+                                },
                           style: expertRequested == true
-                          ? ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFF949FFF)))
-                          : ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFF1E4DE8))),
+                              ? ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xFF949FFF)))
+                              : ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color(0xFF1E4DE8))),
                           child: Padding(
                             padding: const EdgeInsets.all(24.0),
                             child: expertRequested == true
-                            ? Text(
-                              "EXPERTO SOLICITADO",
-                              style: TextStyle(color: Colors.white),
-                            )
-                            : Text(
-                              "SOLICITAR EXPERTO",
-                              style: TextStyle(color: Colors.white),
-                            ),
+                                ? Text(
+                                    "EXPERTO SOLICITADO",
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                : Text(
+                                    "SOLICITAR EXPERTO",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                           )),
                     )
                   ],

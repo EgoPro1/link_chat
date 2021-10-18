@@ -52,7 +52,7 @@ class _PatientStep3State extends State<PatientStep3> {
               padding: EdgeInsets.only(
                   top: 18.0, left: 18.0, right: 18.0, bottom: 5.0),
               child: Text(
-                "Cras a urna magna.Quisque pulvinar risus arcu, non accumsan nunc tincidunt ut.",
+                "Por favor suba los documentos necesarios para poder ser evaluado para que posteriormente pueda ser aceptado",
                 style: TextStyle(
                     color: Color(0xFF13AB46),
                     fontWeight: FontWeight.w400,
@@ -69,14 +69,10 @@ class _PatientStep3State extends State<PatientStep3> {
                   var result = null;
                   //if(_prefs.getname==null){
                     result = await uService.createUser(Upatientaux);
-                  String uuid = result.data.substring(9,/*48*/ 45);
-                  String rolid= result.data.substring(56,92);
-                  String token = result.data.substring(103,result.data.toString().length-2);
-                  _prefs.setrolid=rolid;
-                  _prefs.setidexp=uuid;
-                    _prefs.settoken=token;
                   //}
 
+
+                  var keys= <String>['dniPictureFront','dniPictureBack','carnetPicture','expertisePicture'];
                   var email='';
                   var password='';
                   if(Upatientaux.email!=null) {
@@ -85,7 +81,7 @@ class _PatientStep3State extends State<PatientStep3> {
 
                   }
                   Future.delayed(Duration.zero,() async {
-                    var res=await fileService.FileExpUpload(_paths1, 'dniPicture', 'carnetPicture');
+                    var res=await fileService.FileExpUpload(_paths1, keys);
 
                   });
 

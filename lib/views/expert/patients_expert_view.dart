@@ -23,11 +23,21 @@ class PatientsExpertView extends StatelessWidget {
         ],
       );
 
-  @override
-  Widget build(BuildContext context) {
+  Future<Map<String, dynamic>> loadTabsData() async {
     final _prefs = new PreferenciasUsuario();
     var premiumService = PremiumService();
+    var activeDiagnosticCases =
+        await premiumService.diagnosisCases(_prefs.gettoken);
+    var pastDiagnosticCases =
+        await premiumService.diagnosedCases(_prefs.getidexp, _prefs.gettoken);
+    return {
+      "active_list": activeDiagnosticCases,
+      "past_list": pastDiagnosticCases
+    };
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: DefaultTabController(
@@ -59,9 +69,7 @@ class PatientsExpertView extends StatelessWidget {
                   ),
                 ),
                 body: FutureBuilder(
-                  // future: premiumService.premiumList(_prefs.gettoken),
-                  future: premiumService.premiumList(
-                      _prefs.gettoken),
+                  future: loadTabsData(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(
@@ -69,15 +77,21 @@ class PatientsExpertView extends StatelessWidget {
                       );
                     }
                     if (snapshot.hasData) {
-                      var premiumList = (snapshot.data
+                      var data = (snapshot.data as Map<String, dynamic>);
+                      var activeDiagnosisCases = (data["active_list"]
+                              as APIResponse<List<PatientResultResponse>>)
+                          .data;
+                      var pastDiagnosisCases = (data["past_list"]
                               as APIResponse<List<PatientResultResponse>>)
                           .data;
                       return TabBarView(
                         children: [
                           ActiveExpertView(
-                            premiumList: premiumList!,
+                            activeDiagnosisCases: activeDiagnosisCases!,
                           ),
-                          PasiveExpertView()
+                          PasiveExpertView(
+                            pastDiagnosisCases: pastDiagnosisCases!,
+                          )
                         ],
                       );
                     }

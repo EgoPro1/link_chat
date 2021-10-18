@@ -253,27 +253,6 @@ class _Step1FormState extends State<Step1Form> {
             height: 5.0,
             color: Colors.transparent,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('¿Aún no tienes cuenta?'),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterView()),
-                  );
-                },
-                child: Text(
-                  'Registrate',
-                  style: TextStyle(
-                    color: Color(0xFF1E4DE8),
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );

@@ -24,9 +24,11 @@ class LoadingMethodPatientView extends StatefulWidget {
 }
 
 class _LoadingMethodPatientViewState extends State<LoadingMethodPatientView> {
+  late String resultid;
   late Future<dynamic> _runModel;
-  FileService fileService= new FileService();
-  var photos= <String>[];
+  FileService fileService = new FileService();
+  bool charged = true;
+  var photos = <String>[];
   final _prefs = new PreferenciasUsuario();
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _LoadingMethodPatientViewState extends State<LoadingMethodPatientView> {
   }
 
   Future<dynamic> _loadAndRunModel() async {
+    charged = false;
     if (widget.methodIndex == 0) {
       await loadModel(
           "modelEfficientNetB0v2.tflite", "modelEfficientNetB0v2.txt");
@@ -47,16 +50,16 @@ class _LoadingMethodPatientViewState extends State<LoadingMethodPatientView> {
 
     if (res == null || res.length <= 0) throw Exception("Sin resultados");
     // print(res);
-    var net_img_url="";
+    var net_img_url = "";
     try {
-      var _image=File(_prefs.getpath);
-      var resp = await fileService.ImageUpload(_image,'skinPhoto');
+      var _image = File(_prefs.getpath);
+      var resp = await fileService.ImageUpload(_image, 'skinPhoto');
 
       Map valueMap = json.decode(_prefs.getNpath);
       print(valueMap['url']);
-      net_img_url=valueMap['url'];
+      net_img_url = valueMap['url'];
       photos.add(net_img_url);
-      _prefs.setpathl=photos;
+      _prefs.setpathl = photos;
 
       // print(response.toString());
       var bodyToPost = MethodResultModel(
@@ -71,17 +74,15 @@ class _LoadingMethodPatientViewState extends State<LoadingMethodPatientView> {
       var methodService = MethodModelService();
       // print(bodyToPost.toJson());
       var response = await methodService.postModelResult(
-          bodyToPost,
-          _prefs.getidpat,
-          _prefs.gettoken);
+          bodyToPost, _prefs.getidpat, _prefs.gettoken);
 
-
+      resultid = response.data!.value!;
     } catch (e) {
       print(e);
     }
     res[0]["image_path"] = net_img_url;
     preferences.remove("temp_patient_image_path"); //Se libera
-    
+
     return res[0];
   }
 
@@ -114,7 +115,7 @@ class _LoadingMethodPatientViewState extends State<LoadingMethodPatientView> {
                           imagePath: result["image_path"],
                           premium: false,
                           diagnosisInfo: List.empty(),
-                          resultid:result["resultId"],
+                          resultid: resultid,
                         )));
               });
             }

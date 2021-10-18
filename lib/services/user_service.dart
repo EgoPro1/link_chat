@@ -28,9 +28,21 @@ class UserService with ChangeNotifier {
         .then((data) {
       if (data.statusCode == 201) {
         print("FUNCIONA");
+        final jsonData = json.decode(data.body);
+        _prefs.setrolid=jsonData['rolid'];
+        if(item.rol=='patient') {
+          _prefs.setidpat=jsonData['uuid'];
+          _prefs.setrol='patient';
+        }else{
+          _prefs.setidexp=jsonData['uuid'];
+          _prefs.setrol='expert';
+        }
+        _prefs.settoken=jsonData['token'];
         print(data.body);
 
         return APIResponse<String>(data: data.body);
+       /* return APIResponse<LoginResponse>(
+            data: LoginResponse.fromJson(jsonData));*/
       }
       return APIResponse<String>(error: true, errorMessage: 'An error occured');
     }).catchError((_) =>
@@ -72,6 +84,11 @@ class UserService with ChangeNotifier {
         return APIResponse<LoginResponse>(
             data: LoginResponse.fromJson(jsonData));
       }
+      if (data.statusCode == 409){
+
+        return APIResponse<LoginResponse>(
+            error: true, errorMessage: 'Proceso de validación de experto en curso');
+      } ;
       return APIResponse<LoginResponse>(
           error: true, errorMessage: 'El usuario y/o Contraseña es incorrecto');
     }).catchError((_) => APIResponse<LoginResponse>(

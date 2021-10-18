@@ -95,79 +95,89 @@ class _RecordPatientState extends State<RecordPatient> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ResultPatientView(
-                                    accuracy:
-                                        patientResultList[i].modelPercentage!,
-                                    label: patientResultList[i].modelResult!,
-                                    imagePath: patientResultList[i].pictureUrl!,
-                                    premium: patientResultList[i].isPremium!,
-                                    diagnosisInfo:
-                                        patientResultList[i].diagnosisData!,
-                                    resultid:patientResultList[i].resultId!))),
+                                      accuracy:
+                                          patientResultList[i].modelPercentage!,
+                                      label: patientResultList[i].modelResult!,
+                                      imagePath:
+                                          patientResultList[i].pictureUrl!,
+                                      premium: patientResultList[i].isPremium!,
+                                      diagnosisInfo:
+                                          patientResultList[i].diagnosisData!,
+                                      resultid: patientResultList[i].resultId!,
+                                      //name: patientResultList[i].diagnosisData![0].expertName!
+                                    ))),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
+                              SizedBox(height: 25.0),
                               Stack(
-                                alignment: Alignment.bottomRight,
-                                children: [
+                                // ignore: deprecated_member_use
+                                overflow: Overflow.visible,
+                                alignment: Alignment.bottomLeft,
+                                children: <Widget>[
                                   Image.network(
                                     patientResultList[i].pictureUrl!,
-                                    height: 182,
-                                    width: 182,
+                                    height: 180,
+                                    width: 180,
                                     alignment: Alignment.center,
                                     errorBuilder: (context, _, __) {
                                       return Image.asset(
                                         "assets/imagen3x.png",
-                                        height: 182,
-                                        width: 182,
+                                        height: 180,
+                                        width: 180,
                                         alignment: Alignment.center,
                                       );
                                     },
                                   ),
-                                  Container(
-                                    height: 80,
-                                    child: CircularPercentIndicator(
-                                      circularStrokeCap:
-                                          CircularStrokeCap.round,
-                                      radius: 80.0,
-                                      lineWidth: 10.0,
-                                      center: new Text(
-                                          (patientResultList[i]
-                                                          .modelPercentage! *
-                                                      100)
-                                                  .toStringAsFixed(0) +
-                                              "%",
-                                          style: const TextStyle(
-                                            color: const Color(0xFF000000),
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.w500,
-                                          )),
-                                      percent:
-                                          patientResultList[i].modelPercentage!,
-                                      progressColor:
-                                          patientResultList[i].modelResult !=
-                                                  "melanoma"
-                                              ? const Color(0xFF13AB46)
-                                              : const Color(0xFFD50000),
-                                      backgroundColor: Colors.white,
+                                  Positioned(
+                                    right: 20,
+                                    child: Container(
+                                      alignment: Alignment.bottomRight,
+                                      height: 80,
+                                      child: CircularPercentIndicator(
+                                        circularStrokeCap:
+                                            CircularStrokeCap.round,
+                                        radius: 80.0,
+                                        lineWidth: 10.0,
+                                        center: new Text(
+                                            (patientResultList[i]
+                                                            .modelPercentage! *
+                                                        100)
+                                                    .toStringAsFixed(0) +
+                                                "%",
+                                            style: const TextStyle(
+                                              color: const Color(0xFF000000),
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.w500,
+                                            )),
+                                        percent: patientResultList[i]
+                                            .modelPercentage!,
+                                        progressColor:
+                                            patientResultList[i].modelResult !=
+                                                    "melanoma"
+                                                ? const Color(0xFF13AB46)
+                                                : const Color(0xFFD50000),
+                                        backgroundColor: Colors.white,
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                      alignment: Alignment.bottomLeft,
+                                  Positioned(
+                                      top: 180,
                                       child: patientResultList[i].modelResult !=
                                               "melanoma"
                                           ? Text(
-                                              "  Benigno",
+                                              "             Benigno",
                                               style: TextStyle(
-                                                  color: Colors.green[800],
-                                                  fontSize: 20,
+                                                  color: Color(0xFF13AB46),
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold),
                                             )
-                                          : Text("  Maligno",
+                                          : Text("            Maligno",
                                               style: TextStyle(
-                                                  color: Colors.red[800],
-                                                  fontSize: 20,
+                                                  color: Color(0xFFD50000),
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold)))
                                 ],
                               ),
